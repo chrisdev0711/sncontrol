@@ -35,7 +35,7 @@ class RegisterTenantController extends Controller
         // Get server id and name
         $servers = $ploi->servers()->get()->getData();
         foreach ($servers as $server) {
-            if ($server->name === 'stocknow.dev') {
+            if ($server->name === 'sndev-up-lon1') {
                 $serverId = $server->id;
                 $serverName = $server->name;
             }
@@ -44,7 +44,7 @@ class RegisterTenantController extends Controller
         // Create Site
         $ploi->servers($serverId)->sites()->create(
             // $domain = $data['domain'].'.stocknow.dev',
-            $domain = $data['domain'].".{$serverName}",
+            $domain = $data['domain'].'.stocknow.dev',
             $webDirectory = '/public',
             $projectDirectory = '/',
             $systemUser = 'ploi',
@@ -56,7 +56,7 @@ class RegisterTenantController extends Controller
         // Get site id and domain
         $sites = $ploi->servers($serverId)->sites()->get()->getData();
         foreach ($sites as $site) {
-            if ($site->domain == $data['domain'].".{$serverName}") {
+            if ($site->domain == $data['domain'].'.stocknow.dev') {
             // if ($site->domain == "domain1.stocknow.dev") {
                 $siteId = $site->id;
                 $siteDomain = $site->domain;
