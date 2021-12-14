@@ -18,6 +18,7 @@
     <link rel="stylesheet" href="https://rsms.me/inter/inter.css">
 </head>
 <body class="bg-gray-100 h-screen antialiased font-sans">
+    <div id='loader'></div>
     <nav class="bg-gray-900 py-2">
         <div class="container mx-auto flex justify-between">
             <div>
@@ -45,4 +46,17 @@
         </div>
   </div>
 </body>
+<style>
+    #loader {
+        display: none;
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        width: 100%;
+        background: rgba(0,0,0,0.75) url("http://cdnjs.cloudflare.com/ajax/libs/semantic-ui/0.16.1/images/loader-large.gif") no-repeat center center;
+        z-index: 99999;
+    }
+</style>
 </html>

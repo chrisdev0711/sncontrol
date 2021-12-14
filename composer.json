@@ -17,6 +17,7 @@
         "laravel/telescope": "^4.6",
         "laravel/tinker": "^2.5",
         "livewire/livewire": "^2.0",
+        "ploi/ploi-php-sdk": "^1.8",
         "stancl/tenancy": "^3.0",
         "tightenco/nova-stripe": "^0.2.4"
     },
