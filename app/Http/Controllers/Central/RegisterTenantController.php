@@ -35,7 +35,7 @@ class RegisterTenantController extends Controller
         // Get server id and name
         $servers = $ploi->servers()->get()->getData();
         foreach ($servers as $server) {
-            if ($server->name === 'sndev-up-lon1') {
+            if ($server->name === 'sndev3-up-lon1') {
                 $serverId = $server->id;
                 $serverName = $server->name;
             }
