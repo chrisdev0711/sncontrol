@@ -129,7 +129,7 @@ class RegisterTenantController extends Controller
         sleep(3);
 
         // Development
-        $deployment = "cd /home/ploi/{$siteDomain}\ngit pull origin main\ncomposer install --no-interaction --prefer-dist --optimize-autoloader\nphp artisan key:generate\nphp artisan config:clear\nphp artisan cache:clear\nphp artisan route:cache\nphp artisan view:clear\nphp artisan migrate --force\nphp artisan db:seed --force\nphp artisan serve\necho \"\" | sudo -S service php7.4-fpm reload\necho \"🚀 Application deployed!\"";
+        $deployment = "cd /home/ploi/{$siteDomain}\ngit pull origin main\ncomposer install --no-interaction --prefer-dist --optimize-autoloader\nphp artisan key:generate\nphp artisan config:clear\nphp artisan cache:clear\nphp artisan route:cache\nphp artisan view:clear\nphp artisan migrate --force\nphp artisan db:seed --force\necho \"\" | sudo -S service php7.4-fpm reload\necho \"🚀 Application deployed!\"";
         $ploi->servers($serverId)->sites($siteId)->deployment()->updateDeployScript(
             $deployment,
         );
