@@ -141,6 +141,6 @@ class RegisterTenantController extends Controller
         $data['password'] = bcrypt($data['password']);
         $tenant = (new CreateTenantAction)($data, $data['domain']);
 
-        return redirect()->away("http://{$siteDomain}");
+        return redirect()->away("https://{$siteDomain}");
     }
 }
