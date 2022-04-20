@@ -40,7 +40,7 @@ class RegisterTenantController extends Controller
                 $serverName = $server->name;
             }
         };
-
+        sleep(10);
         // Create Site
         $ploi->servers($serverId)->sites()->create(
             // $domain = $data['domain'].'.stocknow.dev',
@@ -52,7 +52,7 @@ class RegisterTenantController extends Controller
             $webserverTemplate = null,
             $projectType = 'laravel',
         );
-
+        sleep(10);
         // Get site id and domain
         $sites = $ploi->servers($serverId)->sites()->get()->getData();
         foreach ($sites as $site) {
@@ -62,14 +62,14 @@ class RegisterTenantController extends Controller
                 $siteDomain = $site->domain;
             }
         };
-
+        sleep(10);
         // Create Database
         $ploi->servers($serverId)->databases()->create(
             $databaseName = $siteId . 'stocknow',
             $databaseUser = $siteId . 'root',
             $databaseUserPassword = $siteId . 'password',
         );
-
+        sleep(10);
         // Get db username & password;
         $dbUser = $siteId.'root';
         $dbPwd = $siteId.'password';
@@ -83,7 +83,7 @@ class RegisterTenantController extends Controller
             $processes = 1,
             $maximumTries = 3,
         );
-
+        sleep(10);
         // Repository install
         $ploi->servers($serverId)->sites($siteId)->repository()->install(
             $provider = 'github',
@@ -98,7 +98,7 @@ class RegisterTenantController extends Controller
             $certificate = $siteDomain,
             $type = 'letsencrypt',
         );
-
+        sleep(10);
         // Update the Env
         $env = "APP_NAME=StockNow\nAPP_ENV=local\nAPP_KEY=\nAPP_DEBUG=false\nAPP_URL=http://{$siteDomain}\nLOG_CHANNEL=stack\nLOG_LEVEL=debug\nDB_CONNECTION=mysql\nDB_HOST=127.0.0.1\nDB_PORT=3306\nDB_DATABASE={$siteId}stocknow\nDB_USERNAME=\"{$dbUser}\"\nDB_PASSWORD=\"{$dbPwd}\"\nUSER_NAME=\"{$userName}\"\nUSER_EMAIL={$email}\nUSER_PASSWORD={$password}\nBROADCAST_DRIVER=log\nCACHE_DRIVER=file\nFILESYSTEM_DRIVER=local\nQUEUE_CONNECTION=sync\nSESSION_DRIVER=database\nSESSION_LIFETIME=120\nMEMCACHED_HOST=127.0.0.1\nREDIS_HOST=127.0.0.1\nREDIS_PASSWORD=null\nREDIS_PORT=6379\nMAIL_MAILER=smtp\nMAIL_HOST=mailhog\nMAIL_PORT=1025\nMAIL_USERNAME=null\nMAIL_PASSWORD=null\nMAIL_ENCRYPTION=null\nMAIL_FROM_ADDRESS=null\nMAIL_FROM_NAME=Laravel\nAWS_ACCESS_KEY_ID=\nAWS_SECRET_ACCESS_KEY=\nAWS_DEFAULT_REGION=us-east-1\nAWS_BUCKET=\nAWS_USE_PATH_STYLE_ENDPOINT=false\nPUSHER_APP_ID=\nPUSHER_APP_KEY=\nPUSHER_APP_SECRET=\nPUSHER_APP_CLUSTER=mt1\nMIX_PUSHER_APP_KEY=PUSHER_APP_KEY\nMIX_PUSHER_APP_CLUSTER=PUSHER_APP_CLUSTER\n";
         $ploi->servers($serverId)->sites($siteId)->environment()->update(
