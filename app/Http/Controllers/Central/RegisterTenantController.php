@@ -134,7 +134,7 @@ class RegisterTenantController extends Controller
         );
         $ploi->servers($serverId)->sites($siteId)->deployment()->deploy();
        
-        sleep(10);
+        sleep(7);
         $deployment1 = "cd /home/ploi/{$siteDomain}\ngit pull origin main\ncomposer install --no-interaction --prefer-dist --optimize-autoloader\nphp artisan config:clear\nphp artisan cache:clear\nphp artisan route:cache\nphp artisan view:clear\nphp artisan migrate --force\necho \"\" | sudo -S service php7.4-fpm reload\necho \"🚀 Application deployed!\"";
         $ploi->servers($serverId)->sites($siteId)->deployment()->updateDeployScript(
             $deployment1,
@@ -144,7 +144,7 @@ class RegisterTenantController extends Controller
         $data['password'] = bcrypt($data['password']);
         $tenant = (new CreateTenantAction)($data, $data['domain']);
         
-        sleep(5);
+        // sleep(5);
 
         return redirect()->away("https://{$siteDomain}");
     }
