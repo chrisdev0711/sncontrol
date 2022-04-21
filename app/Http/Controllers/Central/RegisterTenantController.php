@@ -105,25 +105,25 @@ class RegisterTenantController extends Controller
         );
 
         // Create Script
-        $script = "php artisan key:generate\ncomposer install\nphp artisan migreate\nphp artisan db:seed\n";
-        // $script = "cp .env.example .env\n";
-        $ploi->scripts()->create(
-            $label = "Run script",
-            $user = 'ploi',
-            $script,
-        );
+        // $script = "php artisan key:generate\ncomposer install\nphp artisan migreate\nphp artisan db:seed\n";
+        // // $script = "cp .env.example .env\n";
+        // $ploi->scripts()->create(
+        //     $label = "Run script",
+        //     $user = 'ploi',
+        //     $script,
+        // );
 
-        // Get script id;
-        $scripts = $ploi->scripts()->get()->getData();
-        foreach (array_reverse($scripts) as $script) {
-            $scriptId = $script->id;
-        }
+        // // Get script id;
+        // $scripts = $ploi->scripts()->get()->getData();
+        // foreach (array_reverse($scripts) as $script) {
+        //     $scriptId = $script->id;
+        // }
 
-        // Run script
-        $ploi->scripts($scriptId)->run(
-            $id = $scriptId,
-            $serverIds = [$serverId],
-        );
+        // // Run script
+        // $ploi->scripts($scriptId)->run(
+        //     $id = $scriptId,
+        //     $serverIds = [$serverId],
+        // );
 
         // sleep(10);
 
@@ -133,11 +133,7 @@ class RegisterTenantController extends Controller
             $deployment,
         );
         $ploi->servers($serverId)->sites($siteId)->deployment()->deploy();
-
-        $deployment = "cd /home/ploi/{$siteDomain}\ngit pull origin main\ncomposer install --no-interaction --prefer-dist --optimize-autoloader\nphp artisan config:clear\nphp artisan cache:clear\nphp artisan route:cache\nphp artisan view:clear\nphp artisan migrate --force\necho \"\" | sudo -S service php7.4-fpm reload\necho \"🚀 Application deployed!\"";
-        $ploi->servers($serverId)->sites($siteId)->deployment()->updateDeployScript(
-            $deployment,
-        );
+        
         // sleep(10);
 
         // Create new tenant and redirect to new subdomain
