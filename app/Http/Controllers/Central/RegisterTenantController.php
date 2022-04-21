@@ -134,11 +134,12 @@ class RegisterTenantController extends Controller
         );
         $ploi->servers($serverId)->sites($siteId)->deployment()->deploy();
         
-        // sleep(10);
 
         // Create new tenant and redirect to new subdomain
         $data['password'] = bcrypt($data['password']);
         $tenant = (new CreateTenantAction)($data, $data['domain']);
+        
+        sleep(10);
 
         return redirect()->away("https://{$siteDomain}");
     }
