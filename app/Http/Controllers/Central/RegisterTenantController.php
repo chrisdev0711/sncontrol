@@ -105,7 +105,7 @@ class RegisterTenantController extends Controller
         );
 
         // Create Script
-        $script = "cd /home/ploi/{$siteDomain}\ngit pull origin main\ncomposer install --no-interaction --prefer-dist --optimize-autoloader\nphp artisan key:generate\ncomposer install\nphp artisan migreate\nphp artisan db:seed\n";
+        $script = "cd /home/ploi/{$siteDomain}\ngit pull origin main\ncomposer install --no-interaction --prefer-dist --optimize-autoloader\nphp artisan key:generate\nphp artisan migreate --force\nphp artisan db:seed --force\n";
         // $script = "cp .env.example .env\n";
         $ploi->scripts()->create(
             $label = "Run script",
