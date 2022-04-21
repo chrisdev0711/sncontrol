@@ -132,11 +132,13 @@ class RegisterTenantController extends Controller
         $ploi->servers($serverId)->sites($siteId)->deployment()->updateDeployScript(
             $deployment,
         );
-        // $ploi->servers($serverId)->sites($siteId)->deployment()->deploy();
-        // $deployment = "cd /home/ploi/{$siteDomain}\ngit pull origin main\ncomposer install --no-interaction --prefer-dist --optimize-autoloader\nphp artisan config:clear\nphp artisan cache:clear\nphp artisan route:cache\nphp artisan view:clear\nphp artisan migrate --force\necho \"\" | sudo -S service php7.4-fpm reload\necho \"🚀 Application deployed!\"";
-        // $ploi->servers($serverId)->sites($siteId)->deployment()->updateDeployScript(
-        //     $deployment,
-        // );
+        $ploi->servers($serverId)->sites($siteId)->deployment()->deploy();
+       
+        sleep(10);
+        $deployment1 = "cd /home/ploi/{$siteDomain}\ngit pull origin main\ncomposer install --no-interaction --prefer-dist --optimize-autoloader\nphp artisan config:clear\nphp artisan cache:clear\nphp artisan route:cache\nphp artisan view:clear\nphp artisan migrate --force\necho \"\" | sudo -S service php7.4-fpm reload\necho \"🚀 Application deployed!\"";
+        $ploi->servers($serverId)->sites($siteId)->deployment()->updateDeployScript(
+            $deployment1,
+        );
 
         // Create new tenant and redirect to new subdomain
         $data['password'] = bcrypt($data['password']);
