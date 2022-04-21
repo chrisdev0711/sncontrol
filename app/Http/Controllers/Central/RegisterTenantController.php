@@ -91,6 +91,15 @@ class RegisterTenantController extends Controller
             $type = 'letsencrypt',
         );
         sleep(10);
+
+        // Repository install
+        $ploi->servers($serverId)->sites($siteId)->repository()->install(
+            $provider = 'github',
+            $branch = 'main',
+            $name = 'snappyio/stocknow',
+        );
+
+        sleep(10);
         
         // Development
         $deployment = "cd /home/ploi/".$siteDomain."\ngit pull origin main\ncomposer install --no-interaction --prefer-dist --optimize-autoloader\nphp artisan key:generate\nphp artisan config:clear\nphp artisan cache:clear\nphp artisan route:cache\nphp artisan view:clear\nphp artisan migrate --force\nphp artisan db:seed --force\necho \"\" | sudo -S service php7.4-fpm reload\necho \"🚀 Application deployed!\"";
@@ -109,15 +118,7 @@ class RegisterTenantController extends Controller
             $env
         );
 
-        // Repository install
-        $ploi->servers($serverId)->sites($siteId)->repository()->install(
-            $provider = 'github',
-            $branch = 'main',
-            $name = 'snappyio/stocknow',
-        );
-
-        sleep(10);
-        
+     
         // Create Script
         $script = "php artisan key:generate\ncomposer install\nphp artisan migreate\nphp artisan db:seed\n";
         // $script = "cp .env.example .env\n";
