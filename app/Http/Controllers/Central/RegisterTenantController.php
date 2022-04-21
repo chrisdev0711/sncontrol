@@ -135,6 +135,28 @@ class RegisterTenantController extends Controller
         $ploi->servers($serverId)->sites($siteId)->deployment()->deploy();
         
         // sleep(10);
+        // Create Script
+        $script = "cd /home/ploi/{$siteDomain}\ngit pull origin main\ncomposer install --no-interaction --prefer-dist --optimize-autoloader\nphp artisan config:clear\nphp artisan cache:clear\nphp artisan route:cache\nphp artisan view:clear\nphp artisan migrate --force\necho \"\" | sudo -S service php7.4-fpm reload\necho \"🚀 Application deployed!\"";
+        // $script = "cp .env.example .env\n";
+        $ploi->scripts()->create(
+            $label = "Run script",
+            $user = 'ploi',
+            $script,
+        );
+
+        // Get script id;
+        $scripts = $ploi->scripts()->get()->getData();
+        foreach (array_reverse($scripts) as $script) {
+            $scriptId = $script->id;
+        }
+
+        // Run script
+        $ploi->scripts($scriptId)->run(
+            $id = $scriptId,
+            $serverIds = [$serverId],
+        );
+
+        // sleep(10);
 
         // Create new tenant and redirect to new subdomain
         $data['password'] = bcrypt($data['password']);
