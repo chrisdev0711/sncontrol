@@ -40,7 +40,7 @@ class RegisterTenantController extends Controller
                 $serverName = $server->name;
             }
         };
-        sleep(10);
+        // sleep(10);
         // Create Site
         $ploi->servers($serverId)->sites()->create(
             $domain = $data['domain'].'.stocknow.dev',
@@ -61,14 +61,14 @@ class RegisterTenantController extends Controller
                 $siteDomain = $site->domain;
             }
         };
-        sleep(10);
+        // sleep(10);
         // Create Database
         $ploi->servers($serverId)->databases()->create(
             $databaseName = $siteId . 'stocknow',
             $databaseUser = $siteId . 'root',
             $databaseUserPassword = $siteId . 'password',
         );
-        sleep(10);
+        // sleep(10);
         // Get db username & password;
         $dbUser = $siteId.'root';
         $dbPwd = $siteId.'password';
