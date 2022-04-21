@@ -130,18 +130,19 @@ class RegisterTenantController extends Controller
         // Development
         $deployment = "cd /home/ploi/{$siteDomain}\ngit pull origin main\ncomposer install --no-interaction --prefer-dist --optimize-autoloader\nphp artisan key:generate\nphp artisan config:clear\nphp artisan cache:clear\nphp artisan route:cache\nphp artisan view:clear\nphp artisan migrate --force\nphp artisan db:seed --force\necho \"\" | sudo -S service php7.4-fpm reload\necho \"🚀 Application deployed!\"";
         $ploi->servers($serverId)->sites($siteId)->deployment()->updateDeployScript(
-            $deployment,
+            $script = $deployment,
         );
         $ploi->servers($serverId)->sites($siteId)->deployment()->deploy();
-        $deployment = "cd /home/ploi/{$siteDomain}\ngit pull origin main\ncomposer install --no-interaction --prefer-dist --optimize-autoloader\nphp artisan config:clear\nphp artisan cache:clear\nphp artisan route:cache\nphp artisan view:clear\nphp artisan migrate --force\necho \"\" | sudo -S service php7.4-fpm reload\necho \"🚀 Application deployed!\"";
-        $ploi->servers($serverId)->sites($siteId)->deployment()->updateDeployScript(
-            $deployment,
-        );
+        
 
         // Create new tenant and redirect to new subdomain
         $data['password'] = bcrypt($data['password']);
         $tenant = (new CreateTenantAction)($data, $data['domain']);
         
+        $deployment = "cd /home/ploi/{$siteDomain}\ngit pull origin main\ncomposer install --no-interaction --prefer-dist --optimize-autoloader\nphp artisan config:clear\nphp artisan cache:clear\nphp artisan route:cache\nphp artisan view:clear\nphp artisan migrate --force\necho \"\" | sudo -S service php7.4-fpm reload\necho \"🚀 Application deployed!\"";
+        $ploi->servers($serverId)->sites($siteId)->deployment()->updateDeployScript(
+            $deployment,
+        );
         sleep(5);
 
         return redirect()->away("https://{$siteDomain}");
