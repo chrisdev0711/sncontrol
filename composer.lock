@@ -3611,16 +3611,16 @@
         },
         {
             "name": "ploi/ploi-php-sdk",
-            "version": "1.8.4",
+            "version": "1.8.7",
             "source": {
                 "type": "git",
                 "url": "https://github.com/ploi-deploy/ploi-php-sdk.git",
-                "reference": "9ece206b40a27c247d0a7bed32f283f02bbc75c1"
+                "reference": "a0ac4acfffbf685f1c06a8845288e293f96bbb79"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/ploi-deploy/ploi-php-sdk/zipball/9ece206b40a27c247d0a7bed32f283f02bbc75c1",
-                "reference": "9ece206b40a27c247d0a7bed32f283f02bbc75c1",
+                "url": "https://api.github.com/repos/ploi-deploy/ploi-php-sdk/zipball/a0ac4acfffbf685f1c06a8845288e293f96bbb79",
+                "reference": "a0ac4acfffbf685f1c06a8845288e293f96bbb79",
                 "shasum": ""
             },
             "require": {
@@ -3657,9 +3657,9 @@
             "description": "Ploi.io for easy site deployments",
             "support": {
                 "issues": "https://github.com/ploi-deploy/ploi-php-sdk/issues",
-                "source": "https://github.com/ploi-deploy/ploi-php-sdk/tree/1.8.4"
+                "source": "https://github.com/ploi-deploy/ploi-php-sdk/tree/1.8.7"
             },
-            "time": "2021-12-07T08:12:05+00:00"
+            "time": "2022-03-07T06:44:06+00:00"
         },
         {
             "name": "psr/container",
@@ -9820,5 +9820,5 @@
         "php": "^7.3|^8.0"
     },
     "platform-dev": [],
-    "plugin-api-version": "2.1.0"
+    "plugin-api-version": "2.3.0"
 }

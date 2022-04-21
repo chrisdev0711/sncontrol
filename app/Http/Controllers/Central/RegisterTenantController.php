@@ -43,7 +43,6 @@ class RegisterTenantController extends Controller
         sleep(10);
         // Create Site
         $ploi->servers($serverId)->sites()->create(
-            // $domain = $data['domain'].'.stocknow.dev',
             $domain = $data['domain'].'.stocknow.dev',
             $webDirectory = '/public',
             $projectDirectory = '/',
@@ -78,20 +77,12 @@ class RegisterTenantController extends Controller
         $ploi->servers($serverId)->sites($siteId)->queues()->create(
             $connection = 'database',
             $queue = 'default',
-            $maximumSeconds = 60,
-            $sleep = 30,
+            $maximumSeconds = 30,
+            $sleep = 10,
             $processes = 1,
-            $maximumTries = 1
+            $maximumTries = 3,
         );
         sleep(10);
-
-        // Create Certificate
-        $ploi->servers($serverId)->sites($siteId)->certificates()->create(
-            $certificate = $siteDomain,
-            $type = 'letsencrypt',
-        );
-        sleep(10);
-
         // Repository install
         $ploi->servers($serverId)->sites($siteId)->repository()->install(
             $provider = 'github',
@@ -99,50 +90,52 @@ class RegisterTenantController extends Controller
             $name = 'snappyio/stocknow',
         );
 
+        sleep(10);
+
+        // Create Certificate
+        $ploi->servers($serverId)->sites($siteId)->certificates()->create(
+            $certificate = $siteDomain,
+            $type = 'letsencrypt',
+        );
         // sleep(10);
-        
-        // Development
-        $deployment = "cd /home/ploi/".$siteDomain."\ngit pull origin main\ncomposer install --no-interaction --prefer-dist --optimize-autoloader\nphp artisan key:generate\nphp artisan config:clear\nphp artisan cache:clear\nphp artisan route:cache\nphp artisan view:clear\nphp artisan migrate --force\nphp artisan db:seed --force\necho \"\" | sudo -S service php7.4-fpm reload\necho \"🚀 Application deployed!\"";
-        dd($deployment);
-        $ploi->servers($serverId)->sites($serverId)->deployment()->deployScript();
-        $ploi->servers($serverId)->sites($siteId)->deployment()->updateDeployScript(
-            $deployment,
-        );
-        $ploi->servers($serverId)->sites($siteId)->deployment()->deploy();
+        // // Update the Env
+        // $env = "APP_NAME=StockNow\nAPP_ENV=local\nAPP_KEY=\nAPP_DEBUG=false\nAPP_URL=http://{$siteDomain}\nLOG_CHANNEL=stack\nLOG_LEVEL=debug\nDB_CONNECTION=mysql\nDB_HOST=127.0.0.1\nDB_PORT=3306\nDB_DATABASE={$siteId}stocknow\nDB_USERNAME=\"{$dbUser}\"\nDB_PASSWORD=\"{$dbPwd}\"\nUSER_NAME=\"{$userName}\"\nUSER_EMAIL={$email}\nUSER_PASSWORD={$password}\nBROADCAST_DRIVER=log\nCACHE_DRIVER=file\nFILESYSTEM_DRIVER=local\nQUEUE_CONNECTION=sync\nSESSION_DRIVER=database\nSESSION_LIFETIME=120\nMEMCACHED_HOST=127.0.0.1\nREDIS_HOST=127.0.0.1\nREDIS_PASSWORD=null\nREDIS_PORT=6379\nMAIL_MAILER=smtp\nMAIL_HOST=mailhog\nMAIL_PORT=1025\nMAIL_USERNAME=null\nMAIL_PASSWORD=null\nMAIL_ENCRYPTION=null\nMAIL_FROM_ADDRESS=null\nMAIL_FROM_NAME=Laravel\nAWS_ACCESS_KEY_ID=\nAWS_SECRET_ACCESS_KEY=\nAWS_DEFAULT_REGION=us-east-1\nAWS_BUCKET=\nAWS_USE_PATH_STYLE_ENDPOINT=false\nPUSHER_APP_ID=\nPUSHER_APP_KEY=\nPUSHER_APP_SECRET=\nPUSHER_APP_CLUSTER=mt1\nMIX_PUSHER_APP_KEY=PUSHER_APP_KEY\nMIX_PUSHER_APP_CLUSTER=PUSHER_APP_CLUSTER\n";
+        // $ploi->servers($serverId)->sites($siteId)->environment()->update(
+        //     $env
+        // );
 
-        sleep(10);
+        // // Create Script
+        // $script = "php artisan key:generate\ncomposer install\nphp artisan migreate\nphp artisan db:seed\n";
+        // // $script = "cp .env.example .env\n";
+        // $ploi->scripts()->create(
+        //     $label = "Run script",
+        //     $user = 'ploi',
+        //     $script,
+        // );
 
-        // Update the Env
-        $env = "APP_NAME=StockNow\nAPP_ENV=local\nAPP_KEY=\nAPP_DEBUG=false\nAPP_URL=http://{$siteDomain}\nLOG_CHANNEL=stack\nLOG_LEVEL=debug\nDB_CONNECTION=mysql\nDB_HOST=127.0.0.1\nDB_PORT=3306\nDB_DATABASE={$siteId}stocknow\nDB_USERNAME=\"{$dbUser}\"\nDB_PASSWORD=\"{$dbPwd}\"\nUSER_NAME=\"{$userName}\"\nUSER_EMAIL={$email}\nUSER_PASSWORD={$password}\nBROADCAST_DRIVER=log\nCACHE_DRIVER=file\nFILESYSTEM_DRIVER=local\nQUEUE_CONNECTION=sync\nSESSION_DRIVER=database\nSESSION_LIFETIME=120\nMEMCACHED_HOST=127.0.0.1\nREDIS_HOST=127.0.0.1\nREDIS_PASSWORD=null\nREDIS_PORT=6379\nMAIL_MAILER=smtp\nMAIL_HOST=mailhog\nMAIL_PORT=1025\nMAIL_USERNAME=null\nMAIL_PASSWORD=null\nMAIL_ENCRYPTION=null\nMAIL_FROM_ADDRESS=null\nMAIL_FROM_NAME=Laravel\nAWS_ACCESS_KEY_ID=\nAWS_SECRET_ACCESS_KEY=\nAWS_DEFAULT_REGION=us-east-1\nAWS_BUCKET=\nAWS_USE_PATH_STYLE_ENDPOINT=false\nPUSHER_APP_ID=\nPUSHER_APP_KEY=\nPUSHER_APP_SECRET=\nPUSHER_APP_CLUSTER=mt1\nMIX_PUSHER_APP_KEY=PUSHER_APP_KEY\nMIX_PUSHER_APP_CLUSTER=PUSHER_APP_CLUSTER\n";
-        $ploi->servers($serverId)->sites($siteId)->environment()->update(
-            $env
-        );
+        // // Get script id;
+        // $scripts = $ploi->scripts()->get()->getData();
+        // foreach (array_reverse($scripts) as $script) {
+        //     $scriptId = $script->id;
+        // }
 
-     
-        // Create Script
-        $script = "php artisan key:generate\ncomposer install\nphp artisan migreate\nphp artisan db:seed\n";
-        // $script = "cp .env.example .env\n";
-        $ploi->scripts()->create(
-            $label = "Run script",
-            $user = 'ploi',
-            $script,
-        );
+        // // Run script
+        // $ploi->scripts($scriptId)->run(
+        //     $id = $scriptId,
+        //     $serverIds = [$serverId],
+        // );
 
-        // Get script id;
-        $scripts = $ploi->scripts()->get()->getData();
-        foreach (array_reverse($scripts) as $script) {
-            $scriptId = $script->id;
-        }
+        // sleep(10);
 
-        // Run script
-        $ploi->scripts($scriptId)->run(
-            $id = $scriptId,
-            $serverIds = [$serverId],
-        );
+        // // Development
+        // $deployment = "cd /home/ploi/{$siteDomain}\ngit pull origin main\ncomposer install --no-interaction --prefer-dist --optimize-autoloader\nphp artisan key:generate\nphp artisan config:clear\nphp artisan cache:clear\nphp artisan route:cache\nphp artisan view:clear\nphp artisan migrate --force\nphp artisan db:seed --force\necho \"\" | sudo -S service php7.4-fpm reload\necho \"🚀 Application deployed!\"";
+        // $ploi->servers($serverId)->sites($siteId)->deployment()->updateDeployScript(
+        //     $deployment,
+        // );
+        // $ploi->servers($serverId)->sites($siteId)->deployment()->deploy();
 
-        sleep(10);
+        // sleep(10);
 
-    
         // Create new tenant and redirect to new subdomain
         $data['password'] = bcrypt($data['password']);
         $tenant = (new CreateTenantAction)($data, $data['domain']);
