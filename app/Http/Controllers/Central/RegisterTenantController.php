@@ -90,7 +90,7 @@ class RegisterTenantController extends Controller
             $name = 'snappyio/stocknow',
         );
 
-        sleep(10);
+        sleep(5);
 
         // Create Certificate
         $ploi->servers($serverId)->sites($siteId)->certificates()->create(
@@ -139,7 +139,7 @@ class RegisterTenantController extends Controller
         $data['password'] = bcrypt($data['password']);
         $tenant = (new CreateTenantAction)($data, $data['domain']);
         
-        sleep(10);
+        sleep(5);
 
         return redirect()->away("https://{$siteDomain}");
     }
