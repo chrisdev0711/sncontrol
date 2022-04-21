@@ -145,16 +145,16 @@ class RegisterTenantController extends Controller
         );
 
         // Get script id;
-        $scripts = $ploi->scripts()->get()->getData();
-        foreach (array_reverse($scripts) as $script) {
-            $scriptId = $script->id;
-        }
+        // $scripts = $ploi->scripts()->get()->getData();
+        // foreach (array_reverse($scripts) as $script) {
+        //     $scriptId = $script->id;
+        // }
 
-        // Run script
-        $ploi->scripts($scriptId)->run(
-            $id = $scriptId,
-            $serverIds = [$serverId],
-        );
+        // // Run script
+        // $ploi->scripts($scriptId)->run(
+        //     $id = $scriptId,
+        //     $serverIds = [$serverId],
+        // );
 
         // sleep(10);
 
